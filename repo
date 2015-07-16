@@ -1,0 +1,67 @@
+#!/bin/bash
+# Open file or commit on Github
+
+# Set the default branch to current branch:
+# BRANCH=$(git rev-parse --abbrev-ref HEAD)
+BRANCH='master'
+
+
+function usage {
+  ME=${0##*/}
+  echo "Options:"
+  echo "  -f  Path to file"
+  echo "  -b  Branch to target (defaults to $BRANCH)"
+  echo "  -c  Commit hash to show"
+  echo ""
+  echo "Example Usage:"
+  echo "  Open a specific file on Github using the default branch"
+  echo "  $ME -f app/controllers/application_controller.rb"
+  echo ""
+  echo "  Specify the 'stable' branch as target"
+  echo "  $ME -b stable -f app/controllers/application_controller.rb"
+  echo ""
+  echo "  Open a commit hash"
+  echo "  $ME -c ddfecdf90a"
+}
+
+function open_url {
+  if which xdg-open > /dev/null ; then
+    xdg-open $1
+  elif which gnome-open > /dev/null ; then
+    gnome-open $1
+  elif which open > /dev/null ; then
+    open $1
+  fi
+  echo "Opened $1"
+}
+
+if [ -d .git ]; then
+
+  while getopts ":b:f:c:" option
+  do
+    case "$option" in
+      b) BRANCH=$OPTARG;;
+      f) FILEPATH=$OPTARG;;
+      c) COMMIT=$OPTARG;;
+    esac
+  done
+
+  BASE=$(git config --get remote.origin.url | sed s/\\.git// | sed s/:/\\// | sed 's/.*github.com//'| sed 's/^[^\/]*/https:\/\/github.com/')
+
+  if [[ -n "$COMMIT" ]] ; then
+    echo "Opening commit hash..."
+
+    open_url "$BASE/commit/$COMMIT"
+  elif [[ -n "$FILEPATH" ]] ; then
+    echo "Opening file on Github..."
+
+    open_url "$BASE/blob/$BRANCH/$FILEPATH"
+  else
+    usage
+  fi
+
+else
+  echo "Not a git repository"
+fi
+
+exit 0

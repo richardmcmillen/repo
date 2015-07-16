@@ -1,0 +1,5 @@
+#!/bin/bash
+
+chmod +x `pwd`/repo
+ln -s `pwd`/repo ~/bin/repo
+
