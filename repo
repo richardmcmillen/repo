@@ -21,7 +21,7 @@ function usage {
   echo "  $ME -b stable -f app/controllers/application_controller.rb"
   echo ""
   echo "  Open a commit hash"
-  echo "  $ME -c ddfecdf90a"
+  echo "  $ME -c 9e69a98fg1"
 }
 
 function open_url {
