@@ -1,13 +1,18 @@
 #!/bin/bash
 # Open file or commit on Github
 
+VERSION='0.1.0'
+
+ME=${0##*/}
+
 # Set the default branch to current branch:
 # BRANCH=$(git rev-parse --abbrev-ref HEAD)
 BRANCH='master'
 
 
 function usage {
-  ME=${0##*/}
+  echo "$ME $VERSION"
+  echo ""
   echo "Options:"
   echo "  -f  Path to file"
   echo "  -b  Branch to target (defaults to $BRANCH)"
