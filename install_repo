@@ -1,5 +1,10 @@
 #!/bin/bash
 
-chmod +x `pwd`/repo
-ln -s `pwd`/repo ~/bin/repo
+mkdir -p ~/bin
 
+ln -sfv `pwd`/repo ~/bin/repo
+
+chmod +x `pwd`/repo
+
+echo "All set. Go to a git repository and try 'repo' to see usage examples."
+echo "If the command is not recognised ensure that the ~/bin directory is in your PATH."
