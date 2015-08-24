@@ -42,12 +42,14 @@ function open_url {
 
 if [ -d .git ]; then
 
-  while getopts ":b:f:c:" option
+  while getopts ":b:f:c:x:l:" option
   do
     case "$option" in
       b) BRANCH=$OPTARG;;
       f) FILEPATH=$OPTARG;;
       c) COMMIT=$OPTARG;;
+      x) BLAME_FILEPATH=$OPTARG;;
+      l) LINE=$OPTARG;;
     esac
   done
 
@@ -57,6 +59,15 @@ if [ -d .git ]; then
     echo "Opening commit hash..."
 
     open_url "$BASE/commit/$COMMIT"
+  elif [[ -n "$BLAME_FILEPATH" ]] ; then
+    echo "WTF'ing on Github..."
+
+    if [[ -n "$LINE" ]] ; then
+      open_url "$BASE/blame/$BRANCH/$BLAME_FILEPATH#L$LINE"
+    else
+      open_url "$BASE/blame/$BRANCH/$BLAME_FILEPATH"
+    fi
+
   elif [[ -n "$FILEPATH" ]] ; then
     echo "Opening file on Github..."
 
